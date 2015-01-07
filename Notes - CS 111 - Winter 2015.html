@@ -13,11 +13,11 @@
 
 <h1>UCLA Class of 2017</h1>
 
-<h2>Lecture #1: 5 January 2014</h2>
+<h2>Lecture #1: January 5, 2014</h2>
 
 <h3>Magical Grep</h3>
 
-<p>Eggert showing some output: </p>
+<p>Sample output: </p>
 
 <pre><code>$ ls -l big 
 -rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
@@ -34,26 +34,26 @@ $
 $ 
 </code></pre>
 
-<p>No matches. Then he timed it: </p>
+<p>No matches. Timing it: </p>
 
 <pre><code>$ time grep x big 
 real 0m009s
 </code></pre>
 
-<p>Just 9 milliseconds. Whaaat?
-That's waaay too fast:
+<p>Just 9 milliseconds!
+For a file that large, this is unreasonable.
 10<sup>19</sup> bytes / 10<sup>{</sup>-2} seconds =&gt; 10<sup>21</sup> bytes/second
  =&gt; 8 * 10<sup>21</sup> bits/second
  =&gt; 8 Zb/second (zetabits/second)</p>
 
-<p>Eggert is encouraging us to read xkcd What If #31, haha,
-which asks what is the entire bandwidth of the Internet?
+<p>xkcd What If #31 asks:
+What is the entire bandwidth of the Internet?
 The current estimate is 167 Tb/second (Terabits/second).
-Then, the comic asks how we can move data faster? </p>
+So how we can move data faster? </p>
 
 <p>Here, at UCLA, we have that problem too. Solution:
-Use the Sneakernet. Move the hard disks physically.
-So if we use all of the US freight industry (UPS, USPS, FedEx, etc.)
+Use the Sneakernet and move the hard disks physically.
+Theoretically, if we use all of the US freight industry (UPS, USPS, FedEx, etc.)
 to move a bunch of MicroSD cards, then we can move
 0.5 Zb/s. How was grep 16 times faster? It cheated. </p>
 
@@ -73,16 +73,9 @@ you cheated, there are no x's". </p>
 Binary file 'big' matches
 </code></pre>
 
-<p>We're going to learn and understand how things work,
-especially operating systems. It is essential. </p>
-
-<p>"This is the pep talk here, where we try to encourage
-more people to watch the course. Maybe I shouldn't have done that."
-Haha. xD </p>
-
 <h3>Course Administration</h3>
 
-<p>What we should know (listed for the transfers): </p>
+<p>Prerequesites: </p>
 
 <p>CS 32: data structures &amp; algorithms
 CS 33: assembly code, caches, ALUs, etc.
