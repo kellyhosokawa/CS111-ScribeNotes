@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CS 111 Scribe Notes: Lecture #1</title>
+	<meta charset="utf-8">
+    <!-- <meta name="format" content="complete"> -->
+</head>
+<body>
+
+<h1>Notes: CS 111 - Winter 2015</h1>
+
+<h1>Ky-Cuong L. Huynh</h1>
+
+<h1>UCLA Class of 2017</h1>
+
+<h2>Lecture #1: 5 January 2014</h2>
+
+<h3>Magical Grep</h3>
+
+<p>Eggert showing some output: </p>
+
+<pre><code>$ ls -l big 
+-rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
+$ 
+</code></pre>
+
+<p>permissions, 1 hard link, &#8230;, &#8230;, size</p>
+
+<p>~10<sup>19</sup> bytes in size</p>
+
+<p>Look for char &#8216;x&#8217; in it. </p>
+
+<pre><code>$ grep x big
+$ 
+</code></pre>
+
+<p>No matches. Then he timed it: </p>
+
+<pre><code>$ time grep x big 
+real 0m009s
+</code></pre>
+
+<p>Just 9 milliseconds. Whaaat?
+That&#8217;s waaay too fast:
+10<sup>19</sup> bytes / 10<sup>{</sup>&#8211;2} seconds =&gt; 10<sup>21</sup> bytes/second
+ =&gt; 8 * 10<sup>21</sup> bits/second
+ =&gt; 8 Zb/second (zetabits/second)</p>
+
+<p>Eggert is encouraging us to read xkcd What If #31, haha,
+which asks what is the entire bandwidth of the Internet?
+The current estimate is 167 Tb/second (Terabits/second).
+Then, the comic asks how we can move data faster? </p>
+
+<p>Here, at UCLA, we have that problem too. Solution:
+Use the Sneakernet. Move the hard disks physically.
+So if we use all of the US freight industry (UPS, USPS, FedEx, etc.)
+to move a bunch of MicroSD cards, then we can move
+0.5 Zb/s. How was grep 16 times faster? It cheated. </p>
+
+<p>The file wasn&#8217;t actually that big; we pretended to
+make it that big, enough to fool all of the standard
+Unix utilities. Grep was smarter: &#8220;in all of the places
+you cheated, there are no x&#8217;s&#8221;. </p>
+
+<p>Say we did: </p>
+
+<pre><code>$ echo x &gt;&gt; big
+</code></pre>
+
+<p>Then: </p>
+
+<pre><code>$ grep x big    
+Binary file 'big' matches
+</code></pre>
+
+<p>We&#8217;re going to learn and understand how things work,
+especially operating systems. It is essential. </p>
+
+<p>&#8220;This is the pep talk here, where we try to encourage
+more people to watch the course. Maybe I shouldn&#8217;t have done that.&#8221;
+Haha. xD </p>
+
+<h3>Course Administration</h3>
+
+<p>What we should know (listed for the transfers): </p>
+
+<p>CS 32: data structures &amp; algorithms
+CS 33: assembly code, caches, ALUs, etc.
+CS 35L: Make, GDB, threads, etc. </p>
+
+<p>Why did we get 35L? 111 was too hard, so they
+made the first 20% of it into 35L. </p>
+
+<p>Eggert also recommends: </p>
+
+<p>CS 131 (programming languages): how languages work
+CS 151B (computer systems architecture): CS 33 on steroids
+CS 118 (networking)</p>
+
+<p>The faculty had a big &#8220;arm-wrestling contest&#8221;,
+and Eggert lost, so 111 is actually a pre-requisite
+for them. Problem: They require each other for
+understanding. We get to learn on the fly. </p>
+
+<p>Faculty fought hard to make it a 5-unit course: </p>
+
+<p>4 hours lecture
+2 hours lab
+9 hours outside study </p>
+
+<p>This is what is reported to the dean.
+YES, Eggert will have a 5&#8211;10 minute break in the middle</p>
+
+<p>Really though:
+3.5 hours lecture
+1.7 hours lab
+20 hours outside study </p>
+
+<p>His recommendation: No procrastination. </p>
+
+<p>Course organization: 17 lectures
+He thinks it should be a semester-length with 30 lectures. </p>
+
+<p>1/9 of grade: 1 midterm, 100 minutes, open notes (esp. assignment printouts),
+during lecture midway through quarter</p>
+
+<p>2/9 of grade: 1 final, 180 minutes, open notes also </p>
+
+<p>1/3 of grade: 4 labs: done with partners
+ 1. Write a shell (with performance features).
+ It&#8217;s different from the others. It&#8217;s designed
+ to make everyone code a lot of C, and get
+ really good at debugging it too. It comes in 3 parts,
+ which we will turn in separately. We&#8217;re expected
+ to be able to break up the other assignments on our own.
+ 2. Kernel hacking, like write a driver
+ 3. Write a file system
+ 4. Distributed.
+ &#8220;The labs are based on real Linix. No toy operating systems.
+ Go take classes at Berekley.&#8221;</p>
+
+<p>2/15 of grade: 2 minilabs: done solo
+ 1. Scheduling
+ 2. Virtual memory</p>
+
+<p>1/12 of grade: Design problem (with partner)
+ 1. Pick a design problem from one of the labs,
+ with consultation from TA
+ 2. Write up a report, etc. </p>
+
+<p>1/20 of grade: Scribe notes (in groups up to 4)
+ Use HTML 5 or 4.01, <em>validated</em>
+ or else points lost. He wants scribe notes
+ that will &#8220;past the test of time&#8221;. Points loss:
+ confusing, ugly, out-of-order; make Eggert look
+ like a genius, like it&#8217;s the Feyman Lectures
+ Go to validator.w3c.org
+ Sign-up during break in class.
+ Due 1 week after lecture. </p>
+
+<p>1/15 of grade: A 2-to&#8211;3 page &#8220;research&#8221; paper,
+ Really a review paper on some topic
+ related to operating systems. We&#8217;ll
+ read papers and articles on them, and
+ then write a report. We can suggest one of
+ our own too. </p>
+
+<p>Lateness penalty:
+1% penalty for (0, 1) days late
+2% penalty for (1, 2) days late
+4% penalty for (2, 3) days late, etc. </p>
+
+<p>Drop-dead date: 13 March, the last day
+of instruction: no assignments accepted
+after this day. </p>
+
+<p>&#8220;I&#8217;ve been in meetings with lawyers trying
+to defend the students, and I&#8217;ve beaten the lawyers
+every time.&#8221;</p>
+
+<p>&#8220;I have been known to seed the Internet with wrong answers.&#8221;</p>
+
+<p>Email a TA or Eggert if unsure after something. </p>
+
+<p>No formal curve. His finals are North Campus&#8217;y,
+combining many ideas from multiple places, so the
+problems tend to be hit-or-miss. He shoots for a mean
+of 50%. Often, it&#8217;s above or below that. A typical
+GPA for 111 is a 3.0, meaning a ~(B-). </p>
+
+<p>Textbook (which is apparently a controversial choice):
+<em>Principles of Computer System Design</em>. This is
+MIT&#8217;s computer system design course. The authors
+are stars of OS design. The grad students write the book
+for them. This book has everything, and doesn&#8217;t really
+dilineate into discrete chapters. </p>
+
+<p>Eggert will not limit himself to what is in the book,
+though he will try to keep them related. Even the assignment-lectures
+link is loose. The discussion sections are actually very important,
+as the TAs have been informed of all the gritty details. </p>
+
+<h3>Operating Systems</h3>
+
+<p>Articles related to OS&#8217;:</p>
+
+<p>&#8220;Red Star 3.0: North Korea launches its own OS&#8221;
+ 2014&#8211;12&#8211;31 Sky News (UK)</p>
+
+<p>&#8220;Crouton for Chromebooks: Run Ubuntu in a browser tab&#8221;
+ 2014&#8211;12&#8211;28 lilputing
+ (Doesn&#8217;t work with a diff. GNU/Linux distro. though;
+ find out why!)</p>
+
+<p>&#8220;Samsung says new (2015) TVs will run Tizen [formerly LiMo]&#8221;
+ CNET 2015&#8211;01&#8211;05</p>
+
+<p>Quotes on OS&#8217;: </p>
+
+<p>Marina Weisbard, leader of Geman Pirate Party (they like piracy):
+&#8220;We don&#8217;t offer a ready-made programme, but an entire operating system.&#8221;
+ &#8211; The Economist 2013&#8211;01&#8211;15, p. 19 </p>
+
+<p>Operating systems are connected to politics, undreamed of before. </p>
+
+<h4>Definition: System</h4>
+
+<p><em>System</em> as defined by the Oxford English Dictionary
+(1928, coedited by Tolkien): </p>
+
+<p>I. An organized or connected group of objects
+II. A set of principles, etc., a scheme, method
+From Greek, see &#8220;systima&#8221; in Greek: organized whole,
+government, constitution. The roots mean
+&#8220;set up with&#8221;. </p>
+
+<p>This is what &#8220;system&#8221; used to mean, but the
+words defining it have changed in meaning with time.
+Even so, the notion of a &#8220;system&#8221; is ancient.
+Marina is appealing to the ancient meaning of &#8220;system&#8221;. </p>
+
+<p>The book&#8217;s definition, from §1.A.2: </p>
+
+<p>&#8220;A set of interconnected components that has a
+specified behavior observed at the interface with its environment.&#8221;</p>
+
+<p><em>Operating system</em> from Bill Gates&#8217; personal
+encyclopedia, Encarta (2007):</p>
+
+<p>&#8220;Master control program in a computer&#8221;</p>
+
+<p>Here, it&#8217;s who&#8217;s in control that matters.</p>
+
+<p>From the American Heritage dictionary
+(the most conservative dictionary, in
+its 4th edition from 2000): </p>
+
+<p>&#8220;Software designed to control the hardware
+of a specific data-processing system in order
+to allow users and application programs to make use of it.&#8221;</p>
+
+<p>This is a very traditional definition of OS.
+Note how it assumes OS&#8217; are hardware-specific.
+That part is obsolete, but users and apps still matter. </p>
+
+<p>From Wikipedia (page id: 640779030, 2015&#8211;01&#8211;03): </p>
+
+<p>&#8220;Software that manages computer hardware and software
+resources and provides common services for computer programs&#8221;</p>
+
+<p>Note how &#8220;control&#8221; has become &#8220;manage&#8221; and the appearance
+of &#8220;resources&#8221;. Resource-management will be of great importance.
+As for &#8220;common services&#8221;, it comes back to how we implement
+that system&#8217;s interface, e.g. any program can ask the OS to
+translate UI text to Spanish for it. We want to avoid duplication.
+The overall goal here is <em>clarity</em>, as few as lines of code as possible. </p>
+
+<p>&#8220;How can we make our systems obvious and clear?&#8221;</p>
+
+<h3>Problems in System Design</h3>
+
+<p>Common Systems Problems: </p>
+
+<ol>
+<li>Incommensurate scaling</li>
+</ol>
+
+<p>Well known in physical engineering designs.
+Example: a 12-foot tall human would need a
+a modified skeleton. Even stretching in all
+3 directions would not work. We&#8217;d be 8 times as heavy
+and 2 times as tall, but our bone strength
+grows as the square of their cross-section. </p>
+
+<p>We are hitting <em>diseconomies of scale</em>, where
+things get more expensive per unit. Example:
+an 8-port gigabit router is $100, but a 48-port
+gigabit router is thousands of dollars. It&#8217;s a
+<em>star network</em> where the number of possible combinations
+of connections grows as the square. </p>
+
+<p>Contrast with: <em>economies of scale</em>, as with
+the pin factory from Adam Smith&#8217;s <em>Wealth of Nations</em>.
+It&#8217;s more efficient to have someone specialize,
+invest capital for eqipment, and make
+many pins rather than everyone else produce their own.
+We need to look for <em>both</em> of these phenomena into
+account when we scale our systems. Otherwise, they
+cause breakage or waste (e.g., too many pins). </p>
+
+<ol>
+<li>Emergent properties</li>
+</ol>
+
+<p>These are properties that only become appparent
+<em>qualitatively</em>. &#8220;Things just happen&#8221; as the system
+gets bigger, and we didn&#8217;t predict them. We&#8217;re looking
+for things that look like no big deal or maybe don&#8217;t even
+exist or are noticeable at a small scale, but break things
+at a large scale.</p>
+
+<p>20 years ago, we got the latest and fastest
+Internet connections. The goal: Do homework faster.
+Instead, they pirated songs, as with Napster.
+UCLA got a huge amount of cease-and-desist letters.
+At one point, more than 80% of the network traffic was
+pirated materials. </p>
+
+<p>Another example, the Tacoma Narrows bridge: They forgot
+about resonant frequencies, in this case from the wind.
+Every civil engineer gets an earful of this now. </p>
+
+<ol>
+<li>Propagation of effects</li>
+</ol>
+
+<p>Operating systems are digital, not analog.
+The smallest thing can make an operating system crash.
+We <em>think</em> we have some well-designed OS with boundaries
+between components. Effects may still cross boundaries
+and wreck things. </p>
+
+<p>Example: A file system takes requests like a:\b\c and gives
+you the file: </p>
+
+<pre><code>cat a:\b\c
+</code></pre>
+
+<p>Somewhere else, we have an encoding for Japanese characters,
+which cannot fit in one byte (more than 256 chars). </p>
+
+<p>ASCII has the top, first bit be 0.
+Japanese will have the top bit be 1, and have two bytes.
+This gives us 2<sup>15</sup> combinations, and so we can handle
+Japanese now. </p>
+
+<p>Say we had: </p>
+
+<pre><code>cp a:\b\c d:[Japanese]
+</code></pre>
+
+<p>Giving him a message like: </p>
+
+<pre><code>&quot;cannot create directory [Japanese]&quot;
+</code></pre>
+
+<p>What happened? The top bit of the second byte
+had a 0, and the rest of it looked like a backslash.
+This happened with an early version of Windows.
+To fix this, Microsoft had to break down the boundary
+between the encoding and the file system and make things
+more complicated. </p>
+
+<ol>
+<li>Trade-offs</li>
+</ol>
+
+<p>We face all the previous problems, and we start trying
+to solve them, only to find that that we make other
+problems worse. </p>
+
+<p>Example: sorting algorithms. Bubble sort
+is faster (than heap sort or mergesort for small-enough datasets,
+but doesn&#8217;t scale the way they do. </p>
+
+<ol>
+<li>COMPLEXITY</li>
+</ol>
+
+<p>This is the problem special to CS. </p>
+
+<p>Consider Moore&#8217;s Law: Complexity doubles every 18&#8211;24 months.
+(for the cheapest design point; it doesn’t hold for more
+expensive CPUs, say). Originally, the law Gordon Moore
+formulated referred to the number of transistors on a chip.
+Eggert said Moore&#8217;s Law is petering out, but he said
+that 10 years ago too. </p>
+
+<p>Our computers are getting more complicated, but
+we designers are not. </p>
+
+<p>Consider Kryder&#8217;s Law: Disk drive capacity is also
+growing exponentially. Eggert&#8217;s first home computer had
+a 1 GB hard drive in 1992 for $1,000. </p>
+
+<p>We need to build systems that work, and that we <em>understand</em>
+despite their immense complexity. The biggest problem we&#8217;re
+going to face is how to manage these enormously complicated
+objects, and make them work&#8211;well. </p>
+
+<h2>Lecture #2: 7 January 2015</h2>
+
+</body>
+</html>
