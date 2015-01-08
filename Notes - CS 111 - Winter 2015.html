@@ -38,24 +38,24 @@
 
 <p>Sample output: </p>
 
-<pre><code>$ ls -l big 
+<pre class="prettyprint">$ ls -l big 
 -rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
 $ 
-</code></pre>
+</pre>
 
 <p>~10<sup>19</sup> bytes in size</p>
 
 <p>Look for char 'x' in it. </p>
 
-<pre><code>$ grep x big
+<pre class="prettyprint">$ grep x big
 $ 
-</code></pre>
+</pre>
 
 <p>No matches. Timing it: </p>
 
-<pre><code>$ time grep x big 
+<pre class="prettyprint">$ time grep x big 
 real 0m009s
-</code></pre>
+</pre>
 
 <p>Just 9 milliseconds!
 For a file that large, this is unreasonable.
@@ -81,14 +81,13 @@ you cheated, there are no x's". </p>
 
 <p>Say we did: </p>
 
-<pre><code>$ echo x &gt;&gt; big
-</code></pre>
+<pre class="prettyprint">$ echo x &gt;&gt; big</pre>
 
 <p>Then: </p>
 
-<pre><code>$ grep x big    
+<pre class="prettyprint">$ grep x big    
 Binary file 'big' matches
-</code></pre>
+</pre>
 
 <h3>Course Administration</h3>
 
@@ -339,8 +338,8 @@ and wreck things. </p>
 <p>Example: A file system takes requests like a:\b\c and gives
 you the file: </p>
 
-<pre><code>cat a:\b\c
-</code></pre>
+<pre class="prettyprint">$ cat a:\b\c
+</pre>
 
 <p>Somewhere else, we have an encoding for Japanese characters,
 which cannot fit in one byte (more than 256 chars). </p>
@@ -352,13 +351,13 @@ Japanese now. </p>
 
 <p>Say we had: </p>
 
-<pre><code>cp a:\b\c d:[Japanese]
-</code></pre>
+<pre class="prettyprint">$ cp a:\b\c d:[Japanese]
+</pre>
 
 <p>Giving him a message like: </p>
 
-<pre><code>&quot;cannot create directory [Japanese]&quot;
-</code></pre>
+<pre class="prettyprint">&quot;cannot create directory [Japanese]&quot;
+</pre>
 
 <p>What happened? The top bit of the second byte
 had a 0, and the rest of it looked like a backslash.
@@ -401,5 +400,6 @@ going to face is how to manage these enormously complicated
 objects, and make them work-well. </p>
 
 </div>
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 </body>
 </html>
