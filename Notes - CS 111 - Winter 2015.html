@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CS 111 Scribe Notes: Lecture #1</title>
-	<meta charset="utf-8">
-    <!-- <meta name="format" content="complete"> -->
+    <link href="styles.css" rel="stylesheet">
+    <title>CS 111 Scribe Notes: Lecture #1</title>
+    <meta charset="utf-8">
     <style>
-    body {
+        .table td, .table th {
         text-align: center;
-    }
-    table, th, td {
-        border: 1px solid black
-    }
-    #page-wrap {
-        text-align: left;
-        width: 800px;
-        margin: 0 auto; 
-    }
-    #table-wrap {
-        text-align: center;
-        width: 800px;
-        margin: 0 auto;
-    }
+        }
+        .p-indent {
+	        margin-left: 2em
+        }
     </style>
 </head>
 
 
 <body>
 
-<div id="page-wrap">
+<div class="container">
 
 <h1>Scribe Notes: CS 111 - Lecture 1 (Winter 2015)</h1>
 
@@ -38,28 +28,28 @@
 
 <p>Sample output: </p>
 
-<pre><code>$ ls -l big 
+<pre class="prettyprint">$ ls -l big 
 -rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
 $ 
-</code></pre>
+</pre>
 
 <p>~10<sup>19</sup> bytes in size</p>
 
 <p>Look for char 'x' in it. </p>
 
-<pre><code>$ grep x big
+<pre class="prettyprint">$ grep x big
 $ 
-</code></pre>
+</pre>
 
 <p>No matches. Timing it: </p>
 
-<pre><code>$ time grep x big 
+<pre class="prettyprint">$ time grep x big 
 real 0m009s
-</code></pre>
+</pre>
 
 <p>Just 9 milliseconds!
 For a file that large, this is unreasonable.
-10<sup>19</sup> bytes / 10<sup>{</sup>-2} seconds =&gt; 10<sup>21</sup> bytes/second
+10<sup>19</sup> bytes / 10<sup>-2</sup> seconds =&gt; 10<sup>21</sup> bytes/second
  =&gt; 8 * 10<sup>21</sup> bits/second
  =&gt; 8 Zb/second (zetabits/second)</p>
 
@@ -81,15 +71,14 @@ you cheated, there are no x's". </p>
 
 <p>Say we did: </p>
 
-<pre><code>$ echo x &gt;&gt; big
-</code></pre>
+<pre class="prettyprint">$ echo x &gt;&gt; big</pre>
 
 <p>Then: </p>
 
-<pre><code>$ grep x big    
+<pre class="prettyprint">$ grep x big    
 Binary file 'big' matches
-</code></pre>
-
+</pre>
+<hr />
 <h3>Course Administration</h3>
 
 
@@ -112,8 +101,8 @@ Binary file 'big' matches
   <li>CS M151B - Computer Systems Architecture</li>
 </ul>
 
-<div id="table-wrap">
-<table>
+<div class="col-md-4">
+<table class="table table-bordered table-striped table-hover table-condensed">
   <tr>
     <th></th>
     <th>Theory</th>
@@ -137,7 +126,7 @@ Binary file 'big' matches
   </tr>
 </table>
 </div>
-
+<div class="clearfix"></div>
 <h3>Assignments</h3>
 
 <ul>
@@ -148,42 +137,50 @@ Binary file 'big' matches
   <li>Scribe Notes (can be done with a partner) - make sure to validate with <a href="http://validator.w3.org/"><em>http://validator.w3.org/</em></a> using HTML 5 or 4.01</li>
 </ul>
 
-<table>
+<div class="col-md-10"><table class="table table-bordered table-striped table-hover table-condensed">
   <tr>
     <th>Item</th>
     <th>Fraction of Grade</th>
+    <th>Notes</th>
   </tr>
   <tr>
     <td>Final</td>
     <td>2/9</td>
+    <td>180 minutes. Open notes, no electronic devices.</td>
   </tr>
   <tr>
       <!-- TODO: Center text in cell; move tables side-by-side -->
     <td>Midterm</td>
     <td>1/9</td>
+    <td>100 minutes in class. Open notes, no electronic devices.</td>
   </tr>
   <tr>
     <td>Labs (4)</td>
     <td>1/3</td>
+    <td>Teams of 1 or 2</td>
   </tr>
   <tr>
     <td>Mini-labs (2)</td>
     <td>2/15</td>
+    <td>Solo, no partners. "WeensyOS" labs</td>
   </tr>
   <tr>
     <td>Design Problem</td>
     <td>1/12</td>
+    <td>Done in teams of 1 or 2. Work to extend part of a lab.
   </tr>
   <tr>
     <td>Research Paper</td>
     <td>1/15</td>
+    <td>2-3 pages summarizing recent work in an area of operating systems.</td>
   </tr>
   <tr>
     <td>Scribe Notes</td>
     <td>1/20</td>
+    <td>Done in teams of up to 4. Due on CCLE one week after the lecture.</td>
   </tr>
-</table>
-
+</table></div>
+<div class="clearfix"></div>
 <p>Lateness penalty:
 1% penalty for (0, 1) days late
 2% penalty for (1, 2) days late
@@ -196,81 +193,76 @@ after this day. </p>
 <p>Textbook:
 <a href="http://www.amazon.com/Principles-Computer-System-Design-Introduction/dp/0123749573"><em>Principles of Computer System Design</em></a>
 by Saltzer & Kaashoek</p>
-
+<hr />
 <h3>Operating Systems</h3>
 
-<!-- TODO: Link to the referenced articles -->
-<p>Articles related to OS':</p>
+<h4>Articles Related to Operating Systems:</h4>
 
-<p>"Red Star 3.0: North Korea launches its own OS";
- 2014-12-31 Sky News (UK)</p>
+<p><a href="http://news.sky.com/story/1400203/red-star-3-0-north-korea-launches-its-own-os">"Red Star 3.0: North Korea launches its own OS"</a>;
+ <cite>Sky News</cite> (UK) 2014-12-31 </p>
 
-<p>"Crouton for Chromebooks: Run Ubuntu in a browser tab"
- 2014-12-28 lilputing
+<p><a href="http://liliputing.com/2014/12/crouton-chromebooks-run-ubuntu-browser-tab.html">"Crouton for Chromebooks: Run Ubuntu in a browser tab"</a>;
+ <cite>lilputing</cite> 2014-12-2 <br>
  (Doesn't work with a diff. GNU/Linux distro. though;
  find out why!)</p>
 
-<p>"Samsung says new (2015) TVs will run Tizen [formerly LiMo]"
- CNET 2015-01-05</p>
+<p><a href ="http://www.cnet.com/news/samsungs-troubled-tizen-software-ready-for-primetime-on-tvs-at-ces-2015/">"Samsung says new (2015) TVs will run Tizen [formerly LiMo]"</a>;
+ <cite>CNET</cite> 2015-01-05</p>
 
-<p>Quotes on OS': </p>
+<h4>Quotes on Operating Systems: </h4>
 
-<p>Marina Weisbard, leader of Geman Pirate Party (they like piracy):
-"We don't offer a ready-made programme, but an entire operating system."
- - The Economist 2013-01-15, p. 19 </p>
+<blockquote><p>
+"We don't offer a ready-made programme, but an entire operating system."</p><footer>
+Marina Weisbard, leader of Geman Pirate Party. <cite>The Economist</cite> 2013-01-15, p. 19 </footer></blockquote>
 
 <p>Operating systems are connected to politics, undreamed of before. </p>
 
 <h4>Definition: System</h4>
 
-But what is a system? 
+<p>But what is a system?</p>
 
-We can turn to an Oxford English Dictionary from 1928 to find 
-a traditional, pre-computer definition:
+<p>We can turn to an Oxford English Dictionary from 1928 to find 
+a traditional, pre-computer definition:<br>
+I. An organized or connected group of objects.<br>
+II. A set of principles, etc., a scheme, method.</p>
 
-<p>
-I. An organized or connected group of objects.
-II. A set of principles, etc., a scheme, method. 
+<p>Just as interesting is the etymology:<br>
+"System" comes from the Greek
+σύστημα, (transliterated as "<em>sýstima</em>"), meaning "organized whole,
+government, constitution".</p>
 
-Just as interesting is the etymology. "System" comes from the Greek
-σύστημα, (transliterated as "sýstima"), meaning "organized whole,
-government, constitution". The idea of a system is thus ancient. 
-Even the roots of sýstima mean "set up with". Marina in the above 
-quote is appealing to this ancient meaning. 
-</p>
+<p class="p-indent">The idea of a system is thus ancient. 
+Even the roots of <em>sýstima</em> mean "set up with". Marina in the above 
+quote is appealing to this ancient meaning.</p>
 
 <p>Let's see another definition, this one from the course 
-textbook, from §1.A.2: </p>
-
-<p>"A set of interconnected components that has a
+textbook, from §1.A.2:<br>
+"A set of interconnected components that has a
 specified behavior observed at the interface with its environment."</p>
 
 <p>Let's move to the modern era by examining the definition 
-for "operating system" specifically. about from from Bill Gates' personal
-encyclopedia, Encarta (2007)?</p>
+for "operating system" specifically. From Bill Gates' personal
+encyclopedia, Encarta (2007):<br>
+"Master control program in a computer"</p>
 
-<p>"Master control program in a computer"</p>
-
-<p>By this definition, the entity in control is the one 
+<p class="p-indent">By this definition, the entity in control is the one 
 that matters, a definition fit for Microsoft.</p>
 
 <p>Yet another definition comes from the American Heritage dictionary
-(the most conservative dictionary, in its 4th edition from 2000): </p>
-
-<p>"Software designed to control the hardware of a specific 
+(the most conservative dictionary, in its 4th edition from 2000):<br>
+"Software designed to control the hardware of a specific 
 data-processing system in order to allow users and application 
 programs to make use of it."</p>
 
-<p>This is a very traditional definition. It is also obsolete. 
+<p class="p-indent">This is a very traditional definition. It is also obsolete. 
 Operating systems are no longer necessarily hardware-specific. 
-Even so, user and applications still matter. 
+Even so, user and applications still matter.</p> 
 
-<p>Finally, from Wikipedia (page id: 640779030, 2015-01-03): </p>
-
-<p>"Software that manages computer hardware and software
+<p>Finally, from <a href="http://en.wikipedia.org/w/index.php?title=Operating_system&amp;oldid=640779030">Wikipedia</a> (page id: 640779030, 2015-01-03):<br>
+"Software that manages computer hardware and software
 resources and provides common services for computer programs"</p>
 
-<p>Note how "control" has become "manage" and the appearance
+<p class="p-indent">Note how "control" has become "manage" and the appearance
 of "resources". Resource-management will be of great importance.
 As for "common services", it comes back to how we implement
 that system's interface, e.g. any program can ask the OS to
@@ -336,11 +328,11 @@ We <em>think</em> we have some well-designed OS with boundaries
 between components. Effects may still cross boundaries
 and wreck things. </p>
 
-<p>Example: A file system takes requests like a:\b\c and gives
+<p>Example: A file system takes requests like <code>a:\b\c</code> and gives
 you the file: </p>
 
-<pre><code>cat a:\b\c
-</code></pre>
+<pre class="prettyprint">$ cat a:\b\c
+</pre>
 
 <p>Somewhere else, we have an encoding for Japanese characters,
 which cannot fit in one byte (more than 256 chars). </p>
@@ -352,13 +344,13 @@ Japanese now. </p>
 
 <p>Say we had: </p>
 
-<pre><code>cp a:\b\c d:[Japanese]
-</code></pre>
+<pre class="prettyprint">$ cp a:\b\c d:[Japanese]
+</pre>
 
 <p>Giving him a message like: </p>
 
-<pre><code>&quot;cannot create directory [Japanese]&quot;
-</code></pre>
+<pre class="prettyprint">&quot;cannot create directory [Japanese]&quot;
+</pre>
 
 <p>What happened? The top bit of the second byte
 had a 0, and the rest of it looked like a backslash.
@@ -401,5 +393,6 @@ going to face is how to manage these enormously complicated
 objects, and make them work-well. </p>
 
 </div>
+<script src="run_prettify.js"></script>
 </body>
 </html>
