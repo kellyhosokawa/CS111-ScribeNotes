@@ -31,7 +31,8 @@
 
 <h1>Scribe Notes: CS 111 - Lecture 1 (Winter 2015)</h1>
 
-<h4>By Ky-Cuong L. Huynh and Kelly Hosokawa</h4>
+<h4>By Kelly Hosokawa, Ky-Cuong Huynh,  
+    Gautam Gupta, and Dylan Flanders</h4>
 
 <h3>Magical Grep</h3>
 
@@ -41,8 +42,6 @@
 -rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
 $ 
 </code></pre>
-
-<p>permissions, 1 hard link, ..., ..., size</p>
 
 <p>~10<sup>19</sup> bytes in size</p>
 
@@ -76,8 +75,8 @@ to move a bunch of MicroSD cards, then we can move
 0.5 Zb/s. How was grep 16 times faster? It cheated. </p>
 
 <p>The file wasn't actually that big; we pretended to
-make it that big, enough to fool all of the standard
-Unix utilities. Grep was smarter: "in all of the places
+make it that big and were able to fool all of the standard
+Unix utilities. Grep was smarter. It's really saying, "in all of the places
 you cheated, there are no x's". </p>
 
 <p>Say we did: </p>
@@ -93,17 +92,25 @@ Binary file 'big' matches
 
 <h3>Course Administration</h3>
 
+
+<p>Course Website:
+<a href="http://www.cs.ucla.edu/classes/winter15/cs111/"><em>http://www.cs.ucla.edu/classes/winter15/cs111/</em></a>
+
 <p>Prerequesites: </p>
 
-<p>CS 32: data structures &amp; algorithms
-CS 33: assembly code, caches, ALUs, etc.
-CS 35L: Make, GDB, threads, etc. (essentially the first 20% of CS 111)</p>
+<ul>
+  <li>CS 32 - Introduction to Computer Science II</li>
+  <li>CS 33 - Introduction to Computer Organization</li>
+  <li>CS 35L - Software Construction Laboratory</li>
+</ul>
 
 <p>Also recommended: </p>
 
-<p>CS 131 (programming languages): how languages work
-CS 151B (computer systems architecture): CS 33 on steroids
-CS 118 (networking)</p>
+<ul>
+  <li>CS 118 - Computer Network Fundamentals</li>
+  <li>CS 131 - Programming Languages</li>
+  <li>CS M151B - Computer Systems Architecture</li>
+</ul>
 
 <div id="table-wrap">
 <table>
@@ -131,88 +138,64 @@ CS 118 (networking)</p>
 </table>
 </div>
 
-<p>His recommendation: No procrastination. </p>
+<h3>Assignments</h3>
 
-<p>Course organization: 17 lectures</p>
+<ul>
+  <li>4 Labs (can be done with a partner)</li>
+  <li>2 Mini-labs</li>
+  <li>Design Problem - includes a report and presentation</li>
+  <li>Report - 2 or 3 pages about real OS issues</li>
+  <li>Scribe Notes (can be done with a partner) - make sure to validate with <a href="http://validator.w3.org/"><em>http://validator.w3.org/</em></a> using HTML 5 or 4.01</li>
+</ul>
 
-<p>1/9 of grade: 1 midterm, 100 minutes, open notes (esp. assignment printouts),
-during lecture midway through quarter</p>
-
-<p>2/9 of grade: 1 final, 180 minutes, open notes also </p>
-
-<p>1/3 of grade: 4 labs: done with partners
- 1. Write a shell (with performance features).
- It's different from the others. It's designed
- to make everyone code a lot of C, and get
- really good at debugging it too. It comes in 3 parts,
- which we will turn in separately. We're expected
- to be able to break up the other assignments on our own.
- 2. Kernel hacking, like write a driver
- 3. Write a file system
- 4. Distributed.
- "The labs are based on real Linix. No toy operating systems.
- Go take classes at Berekley."</p>
-
-<p>2/15 of grade: 2 minilabs: done solo
- 1. Scheduling
- 2. Virtual memory</p>
-
-<p>1/12 of grade: Design problem (with partner)
- 1. Pick a design problem from one of the labs,
- with consultation from TA
- 2. Write up a report, etc. </p>
-
-<p>1/20 of grade: Scribe notes (in groups up to 4)
- Use HTML 5 or 4.01, <em>validated</em>
- or else points lost. He wants scribe notes
- that will "past the test of time". Points loss:
- confusing, ugly, out-of-order; make Eggert look
- like a genius, like it's the Feyman Lectures
- Go to validator.w3c.org
- Sign-up during break in class.
- Due 1 week after lecture. </p>
-
-<p>1/15 of grade: A 2-to-3 page "research" paper,
- Really a review paper on some topic
- related to operating systems. We'll
- read papers and articles on them, and
- then write a report. We can suggest one of
- our own too. </p>
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Fraction of Grade</th>
+  </tr>
+  <tr>
+    <td>Final</td>
+    <td>2/9</td>
+  </tr>
+  <tr>
+      <!-- TODO: Center text in cell; move tables side-by-side -->
+    <td>Midterm</td>
+    <td>1/9</td>
+  </tr>
+  <tr>
+    <td>Labs (4)</td>
+    <td>1/3</td>
+  </tr>
+  <tr>
+    <td>Mini-labs (2)</td>
+    <td>2/15</td>
+  </tr>
+  <tr>
+    <td>Design Problem</td>
+    <td>1/12</td>
+  </tr>
+  <tr>
+    <td>Research Paper</td>
+    <td>1/15</td>
+  </tr>
+  <tr>
+    <td>Scribe Notes</td>
+    <td>1/20</td>
+  </tr>
+</table>
 
 <p>Lateness penalty:
 1% penalty for (0, 1) days late
 2% penalty for (1, 2) days late
 4% penalty for (2, 3) days late, etc. </p>
 
-<p>Drop-dead date: 13 March, the last day
-of instruction: no assignments accepted
+<p>Drop-dead date: March 13th (Friday of 10th week) 
+No assignments will accepted
 after this day. </p>
 
-<p>"I've been in meetings with lawyers trying
-to defend the students, and I've beaten the lawyers
-every time."</p>
-
-<p>"I have been known to seed the Internet with wrong answers."</p>
-
-<p>Email a TA or Eggert if unsure after something. </p>
-
-<p>No formal curve. His finals are North Campus'y,
-combining many ideas from multiple places, so the
-problems tend to be hit-or-miss. He shoots for a mean
-of 50%. Often, it's above or below that. A typical
-GPA for 111 is a 3.0, meaning a ~(B-). </p>
-
-<p>Textbook (which is apparently a controversial choice):
-<em>Principles of Computer System Design</em>. This is
-MIT's computer system design course. The authors
-are stars of OS design. The grad students write the book
-for them. This book has everything, and doesn't really
-dilineate into discrete chapters. </p>
-
-<p>Eggert will not limit himself to what is in the book,
-though he will try to keep them related. Even the assignment-lectures
-link is loose. The discussion sections are actually very important,
-as the TAs have been informed of all the gritty details. </p>
+<p>Textbook:
+<a href="http://www.amazon.com/Principles-Computer-System-Design-Introduction/dp/0123749573"><em>Principles of Computer System Design</em></a>
+by Saltzer & Kaashoek</p>
 
 <h3>Operating Systems</h3>
 
