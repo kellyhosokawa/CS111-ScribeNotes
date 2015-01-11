@@ -385,9 +385,6 @@ th {
   clear: both;
 }
 
-@-ms-viewport {
-  width: device-width;
-}
 
 table > tbody > tr > th,
 .table > tbody > tr > th,
