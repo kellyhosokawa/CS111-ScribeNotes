@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="styles.css" rel="stylesheet">
+    <title>CS 111 Scribe Notes: Lecture #1</title>
+    <meta charset="utf-8">
+    <style>
+        .table td, .table th {
+        text-align: center;
+        }
+        .p-indent {
+	        margin-left: 2em
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Scribe Notes: CS 111 - Lecture 1 (Winter 2015)</h1>
+
+<h4>By Kelly Hosokawa, Ky-Cuong Huynh,  
+    Gautam Gupta, and Dylan Flanders</h4>
+
+<h3>Magical Grep</h3>
+
+<p>Sample output: </p>
+
+<pre class="prettyprint">$ ls -l big 
+-rw-rw-r-- 1 eggert faculty 9223372036854775000 Oct 6 11:41 big
+$ 
+</pre>
+
+<p>~10<sup>19</sup> bytes in size</p>
+
+<p>Looking for char 'x' in the file:</p>
+
+<pre class="prettyprint">$ grep x big
+$ 
+</pre>
+
+<p>No matches. Timing the grep: </p>
+
+<pre class="prettyprint">$ time grep x big 
+real 0m009s
+</pre>
+
+<p>Just 9 milliseconds!
+For a file that large, this is unreasonable.
+10<sup>19</sup> bytes / 10<sup>-2</sup> seconds =&gt; 10<sup>21</sup> bytes/second
+ =&gt; 8 * 10<sup>21</sup> bits/second
+ =&gt; 8 Zb/second (zettabits/second)</p>
+
+<p><a href="https://what-if.xkcd.com/31/">xkcd What If #31</a> asks:
+What is the entire bandwidth of the Internet?
+The current estimate is 167 Tb/second (terabits/second).
+So how we can move data faster? </p>
+
+<p>Here, at UCLA, we have that problem too. Solution:
+Use the SneakerNet and move the hard disks physically.
+Theoretically, if we use all of the US freight industry (UPS, USPS, FedEx, etc.)
+to move a bunch of MicroSD cards, then we can move
+0.5 Zb/s. How was grep 16 times faster? It cheated. </p>
+
+<p>The file wasn't actually that big; we pretended to
+make it that big and were able to fool all of the standard
+Unix utilities. Grep was smarter. It's really saying, "in all of the places
+you cheated, there are no x's."</p>
+
+<p>Say we did: </p>
+
+<pre class="prettyprint">$ echo x &gt;&gt; big</pre>
+
+<p>Then: </p>
+
+<pre class="prettyprint">$ grep x big    
+Binary file 'big' matches
+</pre>
+<hr />
+<h3>Course Administration</h3>
+
+
+<p>Course Website:
+<a href="http://www.cs.ucla.edu/classes/winter15/cs111/"><em>http://www.cs.ucla.edu/classes/winter15/cs111/</em></a>
+
+<p>Prerequisites: </p>
+
+<ul>
+  <li>CS 32 - Introduction to Computer Science II</li>
+  <li>CS 33 - Introduction to Computer Organization</li>
+  <li>CS 35L - Software Construction Laboratory</li>
+</ul>
+
+<p>Also recommended: </p>
+
+<ul>
+  <li>CS 118 - Computer Network Fundamentals</li>
+  <li>CS 131 - Programming Languages</li>
+  <li>CS M151B - Computer Systems Architecture</li>
+</ul>
+
+<div class="col-md-4">
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th></th>
+    <th>Theory</th>
+    <th>Reality</th>
+  </tr>
+  <tr>
+      <!-- TODO: Center text in cell; move tables side-by-side -->
+    <td>Lecture</td>
+    <td>4 Hours</td> 
+    <td>3.7 Hours</td>
+  </tr>
+  <tr>
+    <td>Lab</td>
+    <td>2 Hours</td>
+    <td>1.7 Hours</td>
+  </tr>
+  <tr>
+    <td>Outside Study</td>
+    <td>9 Hours</td>
+    <td>20 Hours</td>
+  </tr>
+</table>
+</div>
+<div class="clearfix"></div>
+<h3>Assignments</h3>
+
+<ul>
+  <li>4 Labs (can be done with a partner)</li>
+  <li>2 Mini-labs</li>
+  <li>Design Problem - includes a report and presentation</li>
+  <li>Report - 2 or 3 pages about real OS issues</li>
+  <li>Scribe Notes (can be done with a partner) - make sure to validate with <a href="http://validator.w3.org/"><em>http://validator.w3.org/</em></a> using HTML 5 or 4.01</li>
+</ul>
+
+<div class="col-md-10"><table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Item</th>
+    <th>Fraction of Grade</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>Final</td>
+    <td>2/9</td>
+    <td>180 minutes. Open notes, no electronic devices.</td>
+  </tr>
+  <tr>
+      <!-- TODO: Center text in cell; move tables side-by-side -->
+    <td>Midterm</td>
+    <td>1/9</td>
+    <td>100 minutes in class. Open notes, no electronic devices.</td>
+  </tr>
+  <tr>
+    <td>Labs (4)</td>
+    <td>1/3</td>
+    <td>Teams of 1 or 2</td>
+  </tr>
+  <tr>
+    <td>Mini-labs (2)</td>
+    <td>2/15</td>
+    <td>Solo, no partners. "WeensyOS" labs</td>
+  </tr>
+  <tr>
+    <td>Design Problem</td>
+    <td>1/12</td>
+    <td>Done in teams of 1 or 2. Work to extend part of a lab.
+  </tr>
+  <tr>
+    <td>Research Paper</td>
+    <td>1/15</td>
+    <td>2-3 pages summarizing recent work in an area of operating systems.</td>
+  </tr>
+  <tr>
+    <td>Scribe Notes</td>
+    <td>1/20</td>
+    <td>Done in teams of up to 4. Due on CCLE one week after the lecture.</td>
+  </tr>
+</table></div>
+<div class="clearfix"></div>
+<p>Lateness penalty:
+1% penalty for (0, 1) days late,
+2% penalty for (1, 2) days late,
+4% penalty for (2, 3) days late, etc. </p>
+
+<p>Drop-dead date: March 13th (Friday of 10th week). 
+No assignments will accepted
+after this day. </p>
+
+<p>Textbook:
+<a href="http://www.amazon.com/Principles-Computer-System-Design-Introduction/dp/0123749573"><em>Principles of Computer System Design</em></a>
+by Saltzer & Kaashoek</p>
+<hr />
+<h3>Operating Systems</h3>
+
+<h4>Articles Related to Operating Systems:</h4>
+
+<p><a href="http://news.sky.com/story/1400203/red-star-3-0-north-korea-launches-its-own-os">"Red Star 3.0: North Korea launches its own OS"</a>;
+ <cite>Sky News</cite> (UK) 2014-12-31 </p>
+
+<p><a href="http://liliputing.com/2014/12/crouton-chromebooks-run-ubuntu-browser-tab.html">"Crouton for Chromebooks: Run Ubuntu in a browser tab"</a>;
+ <cite>lilputing</cite> 2014-12-2 <br>
+ (Doesn't work with a diff. GNU/Linux distro. though;
+ find out why!)</p>
+
+<p><a href ="http://www.cnet.com/news/samsungs-troubled-tizen-software-ready-for-primetime-on-tvs-at-ces-2015/">"Samsung says new (2015) TVs will run Tizen [formerly LiMo]"</a>;
+ <cite>CNET</cite> 2015-01-05</p>
+
+<h4>Quotes on Operating Systems: </h4>
+
+<blockquote><p>
+"We don't offer a ready-made programme, but an entire operating system."</p><footer>
+Marina Weisband, leader of German Pirate Party. <cite>The Economist</cite> 2013-01-15, p. 19 </footer></blockquote>
+
+<p>Operating systems are connected to politics. This was undreamed of before. </p>
+
+<h4>Definition: System</h4>
+
+<p>But what is a system?</p>
+
+<p>We can turn to an Oxford English Dictionary from 1928 to find 
+a traditional, pre-computer definition:<br>
+I. An organized or connected group of objects.<br>
+II. A set of principles, etc., a scheme, method.</p>
+
+<p>Just as interesting is the etymology:<br>
+"System" comes from the Greek
+σύστημα, (transliterated as "<em>sýstima</em>"), meaning "organized whole,
+government, constitution."</p>
+
+<p class="p-indent">The idea of a system is thus ancient. 
+Even the roots of <em>sýstima</em> mean "set up with." Marina Weisband in the above 
+quote is appealing to this ancient meaning.</p>
+
+<p>Let's see another definition, this one from the course 
+textbook (§1.A.2):<br>
+"A set of interconnected components that has a
+specified behavior observed at the interface with its environment."</p>
+
+<p>Let's move to the modern era by examining the definition 
+for "operating system" specifically. From Bill Gates' personal
+encyclopedia, Encarta (2007):<br>
+"Master control program in a computer."</p>
+
+<p class="p-indent">By this definition, the entity in control is the one 
+that matters, a definition fit for Microsoft.</p>
+
+<p>Yet another definition comes from the American Heritage dictionary
+(the most conservative dictionary, in its 4th edition from 2000):<br>
+"Software designed to control the hardware of a specific 
+data-processing system in order to allow users and application 
+programs to make use of it."</p>
+
+<p class="p-indent">This is a very traditional definition. It is also obsolete. 
+Operating systems are no longer necessarily hardware-specific. 
+Even so, users and applications still matter.</p> 
+
+<p>Finally, from <a href="http://en.wikipedia.org/w/index.php?title=Operating_system&amp;oldid=640779030">Wikipedia</a> (page id: 640779030, 2015-01-03):<br>
+"Software that manages computer hardware and software
+resources and provides common services for computer programs."</p>
+
+<p class="p-indent">Note how "control" has become "manage" and the appearance
+of "resources." Resource-management will be of great importance.
+As for "common services," it comes back to how we implement
+that system's interface, e.g. any program can ask the OS to
+translate UI text to Spanish for it. We want to avoid duplication.
+The overall goal here is <em>clarity</em>, with as few lines of 
+code as possible. </p>
+
+The guiding question: <p>"How can we make our systems obvious and clear?"</p>
+
+<h3>Problems in System Design</h3>
+
+<p>Common Systems Problems: </p>
+
+<h4>1. Incommensurate scaling</h4>
+
+<p>This problem is well known in physical engineering designs.
+Example: a 12-foot tall human would need a 
+modified skeleton; something like stretching in all
+3 directions would not work. We'd be 8 times as heavy
+and 2 times as tall, but our bone strength
+grows as the square of their cross-section. </p>
+
+<p>We are hitting <em>diseconomies of scale</em>, where
+things get more expensive per unit. Example:
+an 8-port gigabit router is $100, but a 48-port
+gigabit router is thousands of dollars. This is because it's a
+<em>star network</em> where the number of possible combinations
+of connections grows as the square. </p>
+
+<p>Contrast this with <em>economies of scale</em>, as seen in
+the pin factory from Adam Smith's <em>Wealth of Nations</em>.
+There, we saw how it was more efficient to have someone specialize,
+invest capital for equipment, and make
+many pins rather than have everyone else produce their own.
+We need to account for <em>both</em> of these phenomena 
+when we scale our systems. Otherwise, they
+cause breakage or waste (e.g., more pins produced than needed). </p>
+
+<h4>2. Emergent properties</h4>
+
+<p>These are properties that only become apparent
+<em>qualitatively</em>. "Things just happen" as the system
+gets bigger, and we didn't predict them. We're looking
+for things that have no effect or may not even exist
+at a small scale but that will break our system at large-enough scales.
+
+For example: 20 years ago, UCLA got the latest and fastest
+Internet connections. The intended effect: Homework would get done faster.
+Instead, students heavily pirated music, this being the age of Napster.
+UCLA was swamped with cease-and-desist letters.
+At one point, more than 80% of the network traffic was
+pirated materials. </p>
+
+<p>Another example: the Tacoma Narrows bridge. Engineers forgot about 
+resonant frequencies, in this case from the wind. The bridge
+soon collapsed when strong winds swayed it at just the right frequency.
+Every civil engineer gets an earful of this now. </p>
+
+<h4>3. Propagation of effects</h4>
+
+<p>Operating systems are digital, not analog.
+The smallest thing can make an operating system crash.
+Often, we <em>think</em> we have some well-designed OS with boundaries
+between components. Effects may still cross boundaries
+and wreck things. </p>
+
+<p>Example: A file system takes requests like <code>a:\b\c</code> and gives
+you the file: </p>
+
+<pre class="prettyprint">$ cat a:\b\c
+</pre>
+
+<p>Somewhere else, we have an encoding for Japanese characters,
+which cannot fit in one byte (more than 256 Japanese characters exist). </p>
+
+<p>So, we decide on a two-byte encoding scheme. 
+When the text is ASCII, the top first bit will be 0, and we'll leave
+the second byte unused. Japanese will have the top bit be 
+1, and the character may use both bytes.
+This gives us 2<sup>15</sup> combinations, enough to handle Japanese.
+</p>
+
+<p>Say we tried to create a new directory with a Japanese name: </p>
+
+<pre class="prettyprint">$ cp a:\b\c d:[Japanese]
+</pre>
+
+<p>But the user gets an error message along the lines of:</p>
+
+<pre class="prettyprint">&quot;cannot create directory [Japanese]&quot;
+</pre>
+
+<p>What happened? The top bit of the second byte
+had a 0, and the rest of it looked like a backslash.
+This happened with an early version of Windows.
+To fix this, Microsoft had to break down the boundary
+between the encoding and the file system and make things
+more complicated. </p>
+
+<h4>4. Trade-offs</h4>
+
+<p>We face all the previous problems, and we start trying
+to solve them, only to find that that we make other
+problems worse. This can be called the "waterbed effect." </p>
+
+<p>Example: sorting algorithms. Bubble sort
+is faster than heap sort or mergesort for small-enough datasets,
+but doesn't scale the way they do. </p>
+
+<h4>5. Complexity</h4>
+
+<p>This is the problem special to CS. </p>
+
+<p>Consider Moore's Law: Complexity doubles every 18-24 months 
+(for the cheapest design point; it doesn’t necessarily hold for more
+expensive CPUs). Originally, the law Gordon Moore
+formulated referred to the number of transistors on a chip.
+Professor Eggert thinks Moore's Law is petering out, but he said
+that 10 years ago too. </p>
+
+<p>The main concern: computers are getting more complicated, but
+we designers are not becoming much more sophisticated. </p>
+
+<p>Consider also Kryder's Law: Disk drive capacity also 
+grows exponentially. Looking back, Professor Eggert's first home computer had
+a 1 GB hard drive in 1992 for $1,000. </p>
+
+<p>Looking forward, we need to continue to build systems that work, 
+and that we <em>understand</em> despite their immense complexity. 
+It will not be an easy task, but it will be a worthwhile one. 
+
+</div>
+<script src="run_prettify.js"></script>
+</body>
+</html>
